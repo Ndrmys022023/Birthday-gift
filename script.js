@@ -10,7 +10,7 @@
 */
 
 const CONFIG = {
-  personName: "My Universe", // contoh: "Alya", "Sayang", "Cintaku"
+  personName: "Bocillkuuu Sayanggg", // contoh: "Alya", "Sayang", "Cintaku"
   giftDelayToMain: 1450,
   petalInterval: 520,
 };
