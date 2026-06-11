@@ -1228,3 +1228,81 @@ img {
     line-height: 1.02;
   }
   }
+
+/* =====================================================
+   FIX KHUSUS BAGIAN "HAL-HAL KECIL TENTANG KAMU"
+   Tambahkan di PALING BAWAH style.css
+===================================================== */
+
+@media (max-width: 820px) {
+  .reasons-section {
+    align-items: stretch !important;
+    padding: 56px 18px !important;
+    min-height: auto !important;
+    overflow: hidden !important;
+  }
+
+  .reasons-section .section-heading {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 24px !important;
+  }
+
+  .reasons-section .section-heading h2 {
+    font-size: clamp(2rem, 9vw, 3.2rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.045em !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  .reason-cards {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+  }
+
+  .reason-card {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 24px 22px !important;
+    border-radius: 28px !important;
+  }
+
+  .reason-card span {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 18px !important;
+    font-size: 1rem !important;
+  }
+
+  .reason-card h3 {
+    font-size: 1.55rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .reason-card p {
+    font-size: 1rem !important;
+    line-height: 1.75 !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .reasons-section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .reasons-section .section-heading h2 {
+    font-size: clamp(2rem, 10vw, 2.8rem) !important;
+  }
+
+  .reason-card {
+    padding: 22px 20px !important;
+    border-radius: 24px !important;
+  }
+}
