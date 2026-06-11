@@ -5,7 +5,7 @@
 */
 
 const CONFIG = {
-  personName: "My Universe", // Ubah nama di sini, contoh: "Cintaku"
+  personName: "Sayangkuuu", // Ubah nama di sini, contoh: "Cintaku"
   giftDelayToMain: 1450,
   petalInterval: 520,
 };
