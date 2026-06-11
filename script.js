@@ -1,16 +1,11 @@
 /*
   Birthday Surprise — Celestial Bloom
-  Dibuat tanpa library: HTML + CSS + JavaScript saja.
-
-  EDIT CEPAT:
-  - Ubah nama di CONFIG.personName
-  - Ubah teks ucapan di index.html
-  - Foto pakai nama: foto1.jpg, foto2.jpg, foto3.jpg, foto4.jpg
-  - Musik pakai nama: music.mp3
+  Final Script
+  Musik langsung play setelah kotak kado diklik.
 */
 
 const CONFIG = {
-  personName: "Bocillkuuuu Sayanggg", // contoh: "Alya", "Sayang", "Cintaku"
+  personName: "My Universe", // Ubah nama di sini, contoh: "Cintaku"
   giftDelayToMain: 1450,
   petalInterval: 520,
 };
@@ -33,70 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const scrollProgress = document.getElementById("scrollProgress");
   const navDots = document.querySelectorAll(".floating-nav a");
 
-  let musicHasStarted = false;
-
-async function startBirthdayMusic() {
-  if (!bgMusic) return;
-
-  try {
-    bgMusic.muted = false;
-    bgMusic.volume = 0.85;
-
-    if (!musicHasStarted) {
-      bgMusic.currentTime = 0;
-    }
-
-    await bgMusic.play();
-
-    musicHasStarted = true;
-
-    if (musicBtn) {
-      musicBtn.classList.add("playing");
-      musicBtn.setAttribute("aria-label", "Pause music");
-
-      const icon = musicBtn.querySelector(".music-icon");
-      if (icon) icon.textContent = "♪";
-    }
-  } catch (error) {
-    console.warn("Musik gagal diputar:", error);
-
-    if (musicBtn) {
-      musicBtn.classList.remove("playing");
-      musicBtn.title = "Musik gagal diputar. Pastikan file music.mp3 ada di root repository.";
-
-      const icon = musicBtn.querySelector(".music-icon");
-      if (icon) icon.textContent = "!";
-    }
-  }
-}
-
-function pauseBirthdayMusic() {
-  if (!bgMusic) return;
-
-  bgMusic.pause();
-
-  if (musicBtn) {
-    musicBtn.classList.remove("playing");
-    musicBtn.setAttribute("aria-label", "Play music");
-
-    const icon = musicBtn.querySelector(".music-icon");
-    if (icon) icon.textContent = "♪";
-  }
-}
-
-if (musicBtn && bgMusic) {
-  musicBtn.addEventListener("click", async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (bgMusic.paused) {
-      await startBirthdayMusic();
-    } else {
-      pauseBirthdayMusic();
-    }
-  });
-}
-
   if (personName) {
     personName.textContent = CONFIG.personName;
   }
@@ -110,48 +41,23 @@ if (musicBtn && bgMusic) {
   const random = (min, max) => Math.random() * (max - min) + min;
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-  /*
-    =========================
-    MUSIC FIX
-    =========================
-    Musik akan dicoba play saat:
-    1. user tap kado
-    2. user tap tombol music
-  */
+  /* =========================
+     MUSIC
+  ========================= */
 
-  async function playMusic() {
-    if (!bgMusic || !musicBtn) return;
+  function setMusicButtonPlaying() {
+    if (!musicBtn) return;
 
-    try {
-      bgMusic.muted = false;
-      bgMusic.volume = 0.75;
+    musicBtn.classList.add("playing");
+    musicBtn.setAttribute("aria-label", "Pause music");
 
-      if (bgMusic.readyState === 0) {
-        bgMusic.load();
-      }
-
-      await bgMusic.play();
-
-      musicBtn.classList.add("playing");
-      musicBtn.setAttribute("aria-label", "Pause music");
-
-      const icon = musicBtn.querySelector(".music-icon");
-      if (icon) icon.textContent = "♪";
-    } catch (error) {
-      musicBtn.classList.remove("playing");
-
-      const icon = musicBtn.querySelector(".music-icon");
-      if (icon) icon.textContent = "!";
-
-      musicBtn.title = "Musik gagal diputar. Pastikan file music.mp3 ada dan formatnya benar.";
-      console.warn("Musik gagal diputar:", error);
-    }
+    const icon = musicBtn.querySelector(".music-icon");
+    if (icon) icon.textContent = "♪";
   }
 
-  function pauseMusic() {
-    if (!bgMusic || !musicBtn) return;
+  function setMusicButtonPaused() {
+    if (!musicBtn) return;
 
-    bgMusic.pause();
     musicBtn.classList.remove("playing");
     musicBtn.setAttribute("aria-label", "Play music");
 
@@ -159,32 +65,86 @@ if (musicBtn && bgMusic) {
     if (icon) icon.textContent = "♪";
   }
 
-  async function toggleMusic(event) {
+  function setMusicButtonError() {
+    if (!musicBtn) return;
+
+    musicBtn.classList.remove("playing");
+    musicBtn.title = "Tap tombol music untuk memutar lagu.";
+
+    const icon = musicBtn.querySelector(".music-icon");
+    if (icon) icon.textContent = "!";
+  }
+
+  function playBirthdayMusic(reset = false) {
+    const audio = document.getElementById("bgMusic");
+
+    if (!audio) {
+      console.log("Audio element tidak ditemukan.");
+      return;
+    }
+
+    audio.src = "music.mp3";
+    audio.loop = true;
+    audio.muted = false;
+    audio.volume = 1;
+
+    if (reset) {
+      try {
+        audio.currentTime = 0;
+      } catch (error) {
+        console.log("Tidak bisa reset audio:", error);
+      }
+    }
+
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log("Musik berhasil diputar.");
+          setMusicButtonPlaying();
+        })
+        .catch((error) => {
+          console.log("Musik gagal diputar:", error);
+          setMusicButtonError();
+        });
+    }
+  }
+
+  function pauseBirthdayMusic() {
+    const audio = document.getElementById("bgMusic");
+
+    if (!audio) return;
+
+    audio.pause();
+    setMusicButtonPaused();
+  }
+
+  function toggleBirthdayMusic(event) {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
     }
 
-    if (!bgMusic) return;
+    const audio = document.getElementById("bgMusic");
 
-    if (bgMusic.paused) {
-      await playMusic();
+    if (!audio) return;
+
+    if (audio.paused) {
+      playBirthdayMusic(false);
     } else {
-      pauseMusic();
+      pauseBirthdayMusic();
     }
   }
 
-  if (musicBtn && bgMusic) {
-    ["pointerup", "touchend", "click"].forEach((eventName) => {
-      musicBtn.addEventListener(eventName, toggleMusic, { passive: false });
-    });
+  if (musicBtn) {
+    musicBtn.addEventListener("click", toggleBirthdayMusic, { passive: false });
+    musicBtn.addEventListener("touchend", toggleBirthdayMusic, { passive: false });
   }
 
-  /*
-    =========================
-    OPENING GIFT
-    =========================
-  */
+  /* =========================
+     OPENING GIFT
+  ========================= */
 
   function createBurst(amount = 58) {
     if (!burstLayer) return;
@@ -194,6 +154,7 @@ if (musicBtn && bgMusic) {
 
     for (let i = 0; i < amount; i++) {
       const item = document.createElement("span");
+
       item.className = "burst-item";
       item.textContent = pick(burstItems);
       item.style.left = `${centerX}px`;
@@ -222,15 +183,11 @@ if (musicBtn && bgMusic) {
     if (isOpened) return;
     isOpened = true;
 
+    // Musik langsung dipanggil saat user klik/tap kado
+    playBirthdayMusic(true);
+
     giftBox.classList.add("open");
     createBurst();
-    startBirthdayMusic();
-
-    /*
-      Musik langsung dicoba saat user tap kado.
-      Ini lebih aman di HP karena berasal dari aksi user.
-    */
-    playMusic();
 
     if (navigator.vibrate) {
       navigator.vibrate([35, 45, 25]);
@@ -250,45 +207,61 @@ if (musicBtn && bgMusic) {
       });
 
       setTimeout(() => {
-        if (giftScreen) giftScreen.remove();
+        if (giftScreen) {
+          giftScreen.remove();
+        }
       }, 1100);
     }, CONFIG.giftDelayToMain);
   }
 
   if (giftBox) {
-    ["pointerdown", "touchstart", "mousedown", "click"].forEach((eventName) => {
-      giftBox.addEventListener(eventName, openGift, { passive: false });
-    });
+    giftBox.addEventListener("click", openGift, { passive: false });
+    giftBox.addEventListener("touchend", openGift, { passive: false });
   }
 
   if (giftScreen) {
-    ["touchstart", "click"].forEach((eventName) => {
-      giftScreen.addEventListener(
-        eventName,
-        (event) => {
-          if (
-            event.target === giftScreen ||
-            event.target.classList.contains("tap-hint") ||
-            event.target.closest(".opening-copy")
-          ) {
-            openGift(event);
-          }
-        },
-        { passive: false }
-      );
-    });
+    giftScreen.addEventListener(
+      "click",
+      (event) => {
+        const target = event.target;
+
+        if (
+          target === giftScreen ||
+          target.classList.contains("tap-hint") ||
+          target.closest(".opening-copy")
+        ) {
+          openGift(event);
+        }
+      },
+      { passive: false }
+    );
+
+    giftScreen.addEventListener(
+      "touchend",
+      (event) => {
+        const target = event.target;
+
+        if (
+          target === giftScreen ||
+          target.classList.contains("tap-hint") ||
+          target.closest(".opening-copy")
+        ) {
+          openGift(event);
+        }
+      },
+      { passive: false }
+    );
   }
 
-  /*
-    =========================
-    FALLING PETALS
-    =========================
-  */
+  /* =========================
+     FALLING PETALS
+  ========================= */
 
   function createPetal() {
     if (!petalLayer) return;
 
     const petal = document.createElement("span");
+
     petal.className = "petal";
     petal.textContent = pick(fallingItems);
     petal.style.left = `${random(-8, 104)}vw`;
@@ -316,11 +289,9 @@ if (musicBtn && bgMusic) {
     petalTimer = setInterval(createPetal, CONFIG.petalInterval);
   }
 
-  /*
-    =========================
-    REVEAL SECTION
-    =========================
-  */
+  /* =========================
+     REVEAL SECTION
+  ========================= */
 
   const revealItems = document.querySelectorAll(".reveal");
 
@@ -339,11 +310,9 @@ if (musicBtn && bgMusic) {
     revealObserver.observe(item);
   });
 
-  /*
-    =========================
-    NAV DOTS
-    =========================
-  */
+  /* =========================
+     NAV DOTS
+  ========================= */
 
   const sections = [...document.querySelectorAll("main .section[id]")];
 
@@ -367,11 +336,9 @@ if (musicBtn && bgMusic) {
     navObserver.observe(section);
   });
 
-  /*
-    =========================
-    SCROLL PROGRESS
-    =========================
-  */
+  /* =========================
+     SCROLL PROGRESS
+  ========================= */
 
   function updateProgress() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -386,11 +353,9 @@ if (musicBtn && bgMusic) {
   window.addEventListener("resize", updateProgress);
   updateProgress();
 
-  /*
-    =========================
-    INTERACTIVE GARDEN
-    =========================
-  */
+  /* =========================
+     INTERACTIVE GARDEN
+  ========================= */
 
   flowers.forEach((flower) => {
     const showMessage = () => {
@@ -423,11 +388,9 @@ if (musicBtn && bgMusic) {
     );
   });
 
-  /*
-    =========================
-    WISH MODAL
-    =========================
-  */
+  /* =========================
+     WISH MODAL
+  ========================= */
 
   if (wishBtn && wishModal) {
     wishBtn.addEventListener("click", () => {
@@ -467,17 +430,16 @@ if (musicBtn && bgMusic) {
     wishModal.setAttribute("aria-hidden", "true");
   }
 
-  /*
-    =========================
-    CONFETTI
-    =========================
-  */
+  /* =========================
+     CONFETTI
+  ========================= */
 
   function createMiniConfetti(x, y, amount = 40) {
     const colors = ["#ffd98a", "#ff6ea8", "#8d5cff", "#7fffd4", "#ffffff"];
 
     for (let i = 0; i < amount; i++) {
       const confetti = document.createElement("span");
+
       confetti.className = "confetti";
       confetti.style.left = `${x}px`;
       confetti.style.top = `${y}px`;
@@ -498,17 +460,17 @@ if (musicBtn && bgMusic) {
   initStars();
 });
 
-/*
-  =========================
-  STAR CANVAS
-  =========================
-*/
+/* =========================
+   STAR CANVAS
+========================= */
 
 function initStars() {
   const canvas = document.getElementById("starCanvas");
+
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
+
   let stars = [];
   let width = 0;
   let height = 0;
@@ -562,10 +524,6 @@ function initStars() {
       ctx.fill();
     }
 
-    /*
-      Konstelasi hati tipis di area atas.
-      Ini hanya visual tambahan.
-    */
     const cx = width * 0.5;
     const cy = height * 0.23;
     const points = [];
@@ -602,10 +560,12 @@ function initStars() {
 
     points.forEach((p, i) => {
       ctx.beginPath();
+
       ctx.fillStyle =
         i % 3 === 0
           ? "rgba(255, 217, 138, 0.38)"
           : "rgba(255, 255, 255, 0.18)";
+
       ctx.arc(p.x, p.y, i % 3 === 0 ? 1.8 : 1.1, 0, Math.PI * 2);
       ctx.fill();
     });
@@ -617,4 +577,4 @@ function initStars() {
 
   resize();
   draw();
-      }
+}
