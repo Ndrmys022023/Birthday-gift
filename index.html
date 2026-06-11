@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#100019" />
+  <title>Birthday Surprise — Celestial Bloom</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="locked">
+  <div class="noise" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true"></div>
+  <canvas id="starCanvas" class="star-canvas" aria-hidden="true"></canvas>
+  <div id="petalLayer" class="petal-layer" aria-hidden="true"></div>
+
+  <!-- OPENING GIFT -->
+  <section id="giftScreen" class="gift-screen" aria-label="Opening gift screen">
+    <div class="opening-copy">
+      <p class="eyebrow">a secret universe for you</p>
+      <h1>Tap the gift<br>and let the magic bloom</h1>
+      <p>dibuat kecil-kecilan, tapi niatnya sepenuh hati ✨</p>
+    </div>
+
+    <button id="giftBox" class="gift-box" type="button" aria-label="Buka kado">
+      <span class="gift-shadow"></span>
+      <span class="gift-sparkle s1">✦</span>
+      <span class="gift-sparkle s2">✧</span>
+      <span class="gift-sparkle s3">✦</span>
+      <span class="gift-lid">
+        <span class="gift-ribbon ribbon-v"></span>
+        <span class="gift-ribbon ribbon-h"></span>
+        <span class="bow bow-left"></span>
+        <span class="bow bow-right"></span>
+      </span>
+      <span class="gift-base">
+        <span class="gift-ribbon ribbon-v"></span>
+        <span class="gift-ribbon ribbon-h"></span>
+      </span>
+      <span class="gift-glow"></span>
+    </button>
+
+    <p class="tap-hint">🌷 tap / klik kadonya 🌷</p>
+    <div id="burstLayer" class="burst-layer" aria-hidden="true"></div>
+  </section>
+
+  <!-- MAIN WEBSITE -->
+  <main id="mainContent" class="main-content" aria-hidden="true">
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+
+    <nav class="floating-nav" aria-label="Navigasi section">
+      <a href="#home" aria-label="Home"></a>
+      <a href="#letter" aria-label="Letter"></a>
+      <a href="#memories" aria-label="Memories"></a>
+      <a href="#garden" aria-label="Garden"></a>
+      <a href="#timeline" aria-label="Timeline"></a>
+      <a href="#final" aria-label="Final"></a>
+    </nav>
+
+    <button id="musicBtn" class="music-btn" type="button" aria-label="Play music">
+      <span class="music-icon">♪</span>
+      <span class="music-text">music</span>
+    </button>
+    <audio id="bgMusic" loop preload="auto">
+      <source src="assets/music/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <section id="home" class="section hero-section reveal">
+      <div class="moon-orb" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="eyebrow">special day, special soul</p>
+        <h2>Happy Birthday,<br><span id="personName">My Universe</span></h2>
+        <p class="hero-text">
+          Hari ini bukan cuma tentang bertambahnya usia, tapi tentang seseorang yang selalu bikin dunia terasa lebih hangat.
+        </p>
+        <div class="hero-actions">
+          <a href="#letter" class="primary-link">buka pesannya</a>
+          <a href="#memories" class="ghost-link">lihat kenangan</a>
+        </div>
+      </div>
+      <div class="orbit-card" aria-hidden="true">
+        <span>♡</span>
+        <small>made with love</small>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">scroll</div>
+    </section>
+
+    <section id="letter" class="section letter-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">little letter</p>
+        <h2>Untuk kamu yang paling spesial</h2>
+      </div>
+      <article class="glass-letter">
+        <p>
+          Aku cuma mau bilang, semoga hari ini jadi salah satu hari yang paling manis buat kamu. Semoga semua hal baik datang pelan-pelan, tapi pasti.
+        </p>
+        <p>
+          Semoga kamu selalu dikelilingi orang yang sayang, hal-hal yang bikin tenang, dan mimpi-mimpi yang semakin dekat untuk digapai.
+        </p>
+        <p>
+          Terima kasih sudah jadi seseorang yang indah dengan caramu sendiri. Jangan lupa bahagia, ya. Kamu pantas dapat banyak hal baik.
+        </p>
+        <span class="letter-sign">— dari seseorang yang selalu mendoakanmu</span>
+      </article>
+    </section>
+
+    <section id="memories" class="section memories-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">memory gallery</p>
+        <h2>Potongan kecil yang bikin senyum</h2>
+      </div>
+      <div class="gallery-grid">
+        <figure class="photo-card tall">
+          <img src="assets/photos/foto1.jpg" alt="Foto kenangan 1" />
+          <figcaption>favorite smile</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="assets/photos/foto2.jpg" alt="Foto kenangan 2" />
+          <figcaption>soft moment</figcaption>
+        </figure>
+        <figure class="photo-card">
+          <img src="assets/photos/foto3.jpg" alt="Foto kenangan 3" />
+          <figcaption>tiny happiness</figcaption>
+        </figure>
+        <figure class="photo-card wide">
+          <img src="assets/photos/foto4.jpg" alt="Foto kenangan 4" />
+          <figcaption>always special</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="reasons" class="section reasons-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">why you are loved</p>
+        <h2>Hal-hal kecil tentang kamu</h2>
+      </div>
+      <div class="reason-cards">
+        <article class="reason-card">
+          <span>01</span>
+          <h3>Senyummu</h3>
+          <p>Sederhana, tapi bisa bikin suasana yang biasa saja jadi terasa lebih indah.</p>
+        </article>
+        <article class="reason-card">
+          <span>02</span>
+          <h3>Caramu peduli</h3>
+          <p>Kamu punya cara sendiri untuk membuat orang lain merasa dihargai.</p>
+        </article>
+        <article class="reason-card">
+          <span>03</span>
+          <h3>Kuatmu</h3>
+          <p>Bahkan saat capek, kamu tetap berusaha. Itu hal yang keren banget.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="garden" class="section garden-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">interactive garden</p>
+        <h2>Taman kecil berisi doa</h2>
+        <p>Tap bunganya satu-satu.</p>
+      </div>
+      <div class="garden" aria-label="Taman bunga interaktif">
+        <button class="flower" type="button" data-message="Semoga kamu selalu diberi kesehatan dan hati yang tenang.">
+          <span class="stem"></span><span class="bloom">🌷</span>
+        </button>
+        <button class="flower" type="button" data-message="Semoga semua impianmu pelan-pelan jadi nyata.">
+          <span class="stem"></span><span class="bloom">🌸</span>
+        </button>
+        <button class="flower" type="button" data-message="Semoga langkahmu selalu dipermudah dan dikelilingi orang baik.">
+          <span class="stem"></span><span class="bloom">🌹</span>
+        </button>
+        <button class="flower" type="button" data-message="Semoga hari-harimu penuh tawa kecil yang tulus.">
+          <span class="stem"></span><span class="bloom">🌼</span>
+        </button>
+      </div>
+      <p id="flowerMessage" class="flower-message">pilih satu bunga dulu ya...</p>
+    </section>
+
+    <section id="timeline" class="section timeline-section reveal">
+      <div class="section-heading">
+        <p class="eyebrow">birthday wishes</p>
+        <h2>Doa yang aku titipkan untukmu</h2>
+      </div>
+      <div class="timeline">
+        <article>
+          <span></span>
+          <h3>Hari ini</h3>
+          <p>Semoga kamu merasa dicintai, dihargai, dan dirayakan dengan cara yang paling kamu suka.</p>
+        </article>
+        <article>
+          <span></span>
+          <h3>Bulan-bulan berikutnya</h3>
+          <p>Semoga ada banyak kabar baik, kesempatan baru, dan alasan untuk tersenyum.</p>
+        </article>
+        <article>
+          <span></span>
+          <h3>Seterusnya</h3>
+          <p>Semoga kamu tetap jadi kamu: hangat, kuat, dan indah dengan caramu sendiri.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="final" class="section final-section reveal">
+      <div class="final-card">
+        <p class="eyebrow">one last surprise</p>
+        <h2>Make a wish dulu...</h2>
+        <p>Kalau sudah, pencet tombol ini. Semoga wish kamu dikabulkan satu per satu.</p>
+        <button id="wishBtn" class="wish-btn" type="button">send my wish ✨</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="wishModal" class="wish-modal" aria-hidden="true">
+    <div class="wish-modal-card">
+      <button id="closeModal" class="close-modal" type="button" aria-label="Tutup">×</button>
+      <h2>Wish sent to the stars ✨</h2>
+      <p>
+        Semoga di umur baru ini, kamu semakin dekat dengan bahagia yang kamu cari, mimpi yang kamu jaga, dan hidup yang kamu doakan.
+      </p>
+      <p class="modal-small">happy birthday, beautiful soul.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
