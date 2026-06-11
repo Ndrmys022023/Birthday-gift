@@ -33,6 +33,70 @@ document.addEventListener("DOMContentLoaded", () => {
   const scrollProgress = document.getElementById("scrollProgress");
   const navDots = document.querySelectorAll(".floating-nav a");
 
+  let musicHasStarted = false;
+
+async function startBirthdayMusic() {
+  if (!bgMusic) return;
+
+  try {
+    bgMusic.muted = false;
+    bgMusic.volume = 0.85;
+
+    if (!musicHasStarted) {
+      bgMusic.currentTime = 0;
+    }
+
+    await bgMusic.play();
+
+    musicHasStarted = true;
+
+    if (musicBtn) {
+      musicBtn.classList.add("playing");
+      musicBtn.setAttribute("aria-label", "Pause music");
+
+      const icon = musicBtn.querySelector(".music-icon");
+      if (icon) icon.textContent = "♪";
+    }
+  } catch (error) {
+    console.warn("Musik gagal diputar:", error);
+
+    if (musicBtn) {
+      musicBtn.classList.remove("playing");
+      musicBtn.title = "Musik gagal diputar. Pastikan file music.mp3 ada di root repository.";
+
+      const icon = musicBtn.querySelector(".music-icon");
+      if (icon) icon.textContent = "!";
+    }
+  }
+}
+
+function pauseBirthdayMusic() {
+  if (!bgMusic) return;
+
+  bgMusic.pause();
+
+  if (musicBtn) {
+    musicBtn.classList.remove("playing");
+    musicBtn.setAttribute("aria-label", "Play music");
+
+    const icon = musicBtn.querySelector(".music-icon");
+    if (icon) icon.textContent = "♪";
+  }
+}
+
+if (musicBtn && bgMusic) {
+  musicBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (bgMusic.paused) {
+      await startBirthdayMusic();
+    } else {
+      pauseBirthdayMusic();
+    }
+  });
+}
+
   if (personName) {
     personName.textContent = CONFIG.personName;
   }
@@ -160,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     giftBox.classList.add("open");
     createBurst();
+    startBirthdayMusic();
 
     /*
       Musik langsung dicoba saat user tap kado.
